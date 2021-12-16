@@ -4,6 +4,7 @@
     const daySelector = '.taijpn5t.cb02d2ww.lrazzd5p.kk32p0x1.j83agx80.oo9gr5id'
     const timeSelector = '.d2edcug0.hpfvmrgz.qv66sw1b.c1et5uql.lr9zc1uh.a8c37x1j.keod5gw0.nxhoafnm.aigsh9s9.fe6kdd0r.mau55g9w.c8b282yb.d3f4x2em.iv3no6db.jq4qci2q.a3bd9o3v.hnhda86s.hzawbc8m'
     const placeNameSelector = '.a8c37x1j.ni8dbmo4.stjgntxs.l9j0dhe7.ltmttdrg.g0qnabr5.ojkyduve'
+    const placeAddressSelector = '[data-visualcompletion="ignore-dynamic"] .d2edcug0.hpfvmrgz.qv66sw1b.c1et5uql.lr9zc1uh.a8c37x1j.keod5gw0.nxhoafnm.aigsh9s9.fe6kdd0r.mau55g9w.c8b282yb.d3f4x2em.iv3no6db.jq4qci2q.a3bd9o3v.b1v8xokw.m9osqain.hzawbc8m'
 
     const titleElement = document.querySelector(eventTitleSelector)
 
@@ -156,9 +157,12 @@
 
     const placeName = placeNameElement.innerText
 
+    const placeAddressElement = document.querySelector(placeAddressSelector)
+    const placeAddress = placeAddressElement ? placeAddressElement.innerText : null
+
     browser.runtime.sendMessage(
         undefined,
-        {title, time, placeName}
+        {title, time, placeName, placeAddress}
     ).then(response => {
         // nothing
     }).catch(alert)
