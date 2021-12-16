@@ -6,6 +6,7 @@ async function typeText(inputElement, text) {
 (async function() {
 
     const titleInputSelector = '#title'
+
     const titleInputElement = document.querySelector(titleInputSelector)
 
     if (! facebookEvent) {

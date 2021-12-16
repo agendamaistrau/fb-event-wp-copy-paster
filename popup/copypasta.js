@@ -8,10 +8,16 @@ function copyInformationsFromFacebookEvent() {
         getting.then((page) => {
             const facebookEvent = page.getFacebookEvent()
             if (facebookEvent) {
+
+                /** @type {Date} */
+                const time = facebookEvent.time
+                const timeString = time.getFullYear() + '-' + ((time.getMonth() + 1).toString().padStart(2, '0')) + '-' + (time.getDate().toString().padStart(2, '0')) + ' ' + (time.getHours().toString().padStart(2, '0')) + ':' + (time.getMinutes().toString().padStart(2, '0'))
+
                 writeBodyHtml(`
                     <h1>Event Facebook Copié !<h1>
                     <ul>
-                        <li>Titre : ${facebookEvent.title}</li>
+                        <li>Titre : <b>${facebookEvent.title}</b></li>
+                        <li>Date : <b>${timeString}</b></li>
                     </ul>
                 `)
 
