@@ -21,7 +21,6 @@ function copyInformationsFromFacebookEvent() {
                         <li>Nom du lieu : <b>${facebookEvent.placeName}</b></li>
                         <li>Adresse du lieu : <b>${facebookEvent.placeAddress ? facebookEvent.placeAddress : 'Aucune'}</b></li>
                         <li>Description : <br><b>${facebookEvent.description.replaceAll('\n', '<br>')}</b></li>
-                        <li>Image téléchargée : <b>${facebookEvent.imageContent ? 'Oui' : 'Non'}</b></li>
                         <li>Image : <img src="${facebookEvent.imageLink}" style="display block; width: 100%;"></li>
                     </ul>
                 `)
