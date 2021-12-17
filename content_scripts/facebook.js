@@ -1,10 +1,11 @@
-(function() {
+(async function() {
 
     const eventTitleSelector = '.a8c37x1j.ni8dbmo4.stjgntxs.l9j0dhe7.pby63qed'
     const daySelector = '.taijpn5t.cb02d2ww.lrazzd5p.kk32p0x1.j83agx80.oo9gr5id'
     const timeSelector = '.d2edcug0.hpfvmrgz.qv66sw1b.c1et5uql.lr9zc1uh.a8c37x1j.keod5gw0.nxhoafnm.aigsh9s9.fe6kdd0r.mau55g9w.c8b282yb.d3f4x2em.iv3no6db.jq4qci2q.a3bd9o3v.hnhda86s.hzawbc8m'
     const placeNameSelector = '.a8c37x1j.ni8dbmo4.stjgntxs.l9j0dhe7.ltmttdrg.g0qnabr5.ojkyduve'
     const placeAddressSelector = '[data-visualcompletion="ignore-dynamic"] .d2edcug0.hpfvmrgz.qv66sw1b.c1et5uql.lr9zc1uh.a8c37x1j.keod5gw0.nxhoafnm.aigsh9s9.fe6kdd0r.mau55g9w.c8b282yb.d3f4x2em.iv3no6db.jq4qci2q.a3bd9o3v.b1v8xokw.m9osqain.hzawbc8m'
+    const descriptionSelector = '.dati1w0a.hv4rvrfc>.p75sslyk>span'
 
     const titleElement = document.querySelector(eventTitleSelector)
 
@@ -160,9 +161,57 @@
     const placeAddressElement = document.querySelector(placeAddressSelector)
     const placeAddress = placeAddressElement ? placeAddressElement.innerText : null
 
+    const descriptionElement = document.querySelector(descriptionSelector)
+
+    const buttonSelector = '[role="button"]'
+    const buttonElement = descriptionElement.querySelector(buttonSelector)
+
+    if (buttonElement) {
+        buttonElement.click()
+        await new Promise(resolve => setTimeout(resolve, 1000))
+
+        const voirMoinsButtonElement = descriptionElement.querySelector(buttonSelector)
+
+        if (voirMoinsButtonElement) {
+            voirMoinsButtonElement.remove()
+        }
+    }
+
+    const descriptionHTML = descriptionElement.innerHTML
+
+    const splitStartDescription = descriptionHTML.split('<img alt="')
+
+    let newDescriptionHTML = ''
+    for (const splitStartFragmentIndex in splitStartDescription) {
+        const splitStartFragment = splitStartDescription[splitStartFragmentIndex]
+
+        if (splitStartFragmentIndex === '0') {
+            newDescriptionHTML += splitStartFragment
+            continue
+        }
+
+        const doubleQuote = '"'
+        const splitOnClosingDoubleQuote = splitStartFragment.split(doubleQuote)
+        const emoji = splitOnClosingDoubleQuote.shift()
+        newDescriptionHTML += emoji
+
+        const afterEmoji = splitOnClosingDoubleQuote.join(doubleQuote)
+        const HTMLTagClose = '>'
+        const splitOnHTMLTagClose = afterEmoji.split(HTMLTagClose)
+        splitOnHTMLTagClose.shift()
+
+        newDescriptionHTML += splitOnHTMLTagClose.join(HTMLTagClose)
+    }
+
+    descriptionElement.innerHTML = newDescriptionHTML
+
+    const description = descriptionElement.innerText
+
+    const facebookEvent = {title, time, placeName, placeAddress, description}
+
     browser.runtime.sendMessage(
         undefined,
-        {title, time, placeName, placeAddress}
+        facebookEvent
     ).then(response => {
         // nothing
     }).catch(alert)

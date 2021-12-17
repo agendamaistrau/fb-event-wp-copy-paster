@@ -20,6 +20,7 @@ function copyInformationsFromFacebookEvent() {
                         <li>Date : <b>${timeString}</b></li>
                         <li>Nom du lieu : <b>${facebookEvent.placeName}</b></li>
                         <li>Adresse du lieu : <b>${facebookEvent.placeAddress ? facebookEvent.placeAddress : 'Aucune'}</b></li>
+                        <li>Description : <b>${facebookEvent.description}</b></li>
                     </ul>
                 `)
 
