@@ -1,6 +1,17 @@
 var facebookEvent = null
 
-function getFacebookEvent() {
+async function getFacebookEvent() {
+    facebookEvent.imageContent = await new Promise(resolve => {
+        const fileRequest = new XMLHttpRequest()
+        fileRequest.onreadystatechange = function() {
+            if (fileRequest.status == 200 && fileRequest.readyState == 4) {
+                resolve(fileRequest.responseText)
+            }
+        }
+        fileRequest.open('GET', facebookEvent.imageLink, true)
+        fileRequest.send()
+    })
+
     return facebookEvent
 }
 

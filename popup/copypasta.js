@@ -5,8 +5,8 @@ function writeBodyHtml(html) {
 function copyInformationsFromFacebookEvent() {
     browser.tabs.executeScript({file: '/content_scripts/facebook.js'}).then(() => {
         const getting = browser.runtime.getBackgroundPage();
-        getting.then((page) => {
-            const facebookEvent = page.getFacebookEvent()
+        getting.then(async (page) => {
+            const facebookEvent = await page.getFacebookEvent()
             if (facebookEvent) {
 
                 /** @type {Date} */
@@ -21,6 +21,7 @@ function copyInformationsFromFacebookEvent() {
                         <li>Nom du lieu : <b>${facebookEvent.placeName}</b></li>
                         <li>Adresse du lieu : <b>${facebookEvent.placeAddress ? facebookEvent.placeAddress : 'Aucune'}</b></li>
                         <li>Description : <br><b>${facebookEvent.description.replaceAll('\n', '<br>')}</b></li>
+                        <li>Image téléchargée : <b>${facebookEvent.imageContent ? 'Oui' : 'Non'}</b></li>
                         <li>Image : <img src="${facebookEvent.imageLink}" style="display block; width: 100%;"></li>
                     </ul>
                 `)
@@ -38,8 +39,8 @@ function copyInformationsFromFacebookEvent() {
 
 function pasteFacebookEventInformationsToArticle() {
     const getting = browser.runtime.getBackgroundPage();
-    getting.then((page) => {
-        const facebookEvent = page.getFacebookEvent()
+    getting.then(async (page) => {
+        const facebookEvent = await page.getFacebookEvent()
         if (facebookEvent) {
             browser.tabs.executeScript({
                 code: `var facebookEvent = ${JSON.stringify(facebookEvent)};`
