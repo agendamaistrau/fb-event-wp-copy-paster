@@ -6,6 +6,7 @@
     const placeNameSelector = '.a8c37x1j.ni8dbmo4.stjgntxs.l9j0dhe7.ltmttdrg.g0qnabr5.ojkyduve'
     const placeAddressSelector = '[data-visualcompletion="ignore-dynamic"] .d2edcug0.hpfvmrgz.qv66sw1b.c1et5uql.lr9zc1uh.a8c37x1j.keod5gw0.nxhoafnm.aigsh9s9.fe6kdd0r.mau55g9w.c8b282yb.d3f4x2em.iv3no6db.jq4qci2q.a3bd9o3v.b1v8xokw.m9osqain.hzawbc8m'
     const descriptionSelector = '.dati1w0a.hv4rvrfc>.p75sslyk>span'
+    const coverImgSelector = '[data-imgperflogname="profileCoverPhoto"]'
 
     const titleElement = document.querySelector(eventTitleSelector)
 
@@ -207,7 +208,21 @@
 
     const description = descriptionElement.innerText
 
-    const facebookEvent = {title, time, placeName, placeAddress, description}
+    const coverImgElement = document.querySelector(coverImgSelector)
+
+    if (! coverImgElement) {
+        alert('Mauvais selector pour l\'image de couverture')
+        return
+    }
+
+    const imageLink = coverImgElement.src
+
+    if (! imageLink) {
+        alert('Le lien de l\'image de couverture n\'est pas trouvable (probablement un mauvais selector)')
+        return
+    }
+
+    const facebookEvent = {title, time, placeName, placeAddress, description, imageLink}
 
     browser.runtime.sendMessage(
         undefined,
