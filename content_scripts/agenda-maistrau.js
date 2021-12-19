@@ -20,7 +20,12 @@ async function typeText(inputElement, text) {
     }
 
     if (facebookEvent.title) {
-        await typeText(titleInputElement, facebookEvent.title)
+        await typeText(
+            titleInputElement,
+            facebookEvent.title + ' - ' + facebookEvent.placeName + ' - ' + (
+                facebookEvent.city || facebookEvent.placeAddress
+            )
+        )
     }
 
     window.wrappedJSObject.tinymce.get('content').setContent('test')
