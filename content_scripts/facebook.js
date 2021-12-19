@@ -100,7 +100,42 @@
         return
     }
 
-    const facebookEvent = {title, time, placeName, placeAddress, description, imageLink}
+    const findCity = () => {
+        const getCity = (stringThatMightContainACity) => {
+            const splitOnCommas = stringThatMightContainACity.split(', ')
+            const lastEntrySplitOnCommas = splitOnCommas.pop()
+
+            const words = lastEntrySplitOnCommas.split(' ')
+
+            let city = ''
+
+            for (const wordKey in words) {
+                const word = words[wordKey]
+
+                if (! isNaN(word)) { // Excludes postal codes
+                    continue
+                }
+
+                if (! isNaN(word.replace(',', '.'))) { // Excludes coordinates
+                    continue
+                }
+
+                if (city !== '') {
+                    city += ' '
+                }
+
+                city += word
+            }
+
+            return city || null
+        }
+
+        return placeAddress ? getCity(placeAddress) : getCity(placeName)
+    }
+
+    const city = findCity()
+
+    const facebookEvent = {title, time, placeName, placeAddress, city, description, imageLink}
 
     browser.runtime.sendMessage(
         undefined,
