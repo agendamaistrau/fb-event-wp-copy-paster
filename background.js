@@ -15,6 +15,12 @@ async function getFacebookEvent() {
     return facebookEvent
 }
 
+function setZone(zone) {
+    if (facebookEvent) {
+        facebookEvent.zone = zone
+    }
+}
+
 function handleMessage(request, sender, sendResponse) {
     if (request) {
         facebookEvent = request

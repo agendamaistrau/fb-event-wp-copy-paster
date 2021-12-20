@@ -2,10 +2,11 @@ function writeBodyHtml(html) {
     document.querySelector('body').innerHTML = html
 }
 
-function copyInformationsFromFacebookEvent() {
+function copyInformationsFromFacebookEvent(zone) {
     browser.tabs.executeScript({file: '/content_scripts/facebook.js'}).then(() => {
         const getting = browser.runtime.getBackgroundPage();
         getting.then(async (page) => {
+            page.setZone(zone)
             const facebookEvent = await page.getFacebookEvent()
             if (facebookEvent) {
 
@@ -16,6 +17,7 @@ function copyInformationsFromFacebookEvent() {
                 writeBodyHtml(`
                     <h1 style="text-align: center;">Event Facebook Copié !<h1>
                     <ul style="margin-right: 20px;">
+                        <li>Zone : <b>${facebookEvent.zone?.category?.name || 'Aucune'}</b></li>
                         <li>Titre : <b>${facebookEvent.title}</b></li>
                         <li>Date : <b>${timeString}</b></li>
                         <li>Nom du lieu : <b>${facebookEvent.placeName}</b></li>
@@ -64,7 +66,50 @@ chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
     const currentUrl = currentTab.url
 
     if (currentUrl.includes('https://www.facebook.com/events/')) {
-        copyInformationsFromFacebookEvent()
+        const radioButtonsName = 'category-id'
+        const submitButtonId = 'submit-button'
+        
+        writeBodyHtml(`
+            <div style="padding: 0 20px;">
+                <h1 style="text-align: center;">Sélection des Zones<h1>
+                <ul style="list-style-type: none; padding: 0;">
+                    ${zones.map(zone => {
+                        const category = zone.category
+                        const categoryId = category.id
+                        const inputCategoryId = 'cat-' + categoryId
+
+                        return `<li>
+                            <input
+                                type="radio"
+                                id="${inputCategoryId}"
+                                name="${radioButtonsName}"
+                                value="${categoryId}"
+                            >
+                            <label for="${inputCategoryId}">${category.name}</label>
+                        </li>`
+                    }).join('')}
+                </ul>
+                <button
+                    id="${submitButtonId}"
+                    type="submit"
+                    style="width: 100%; text-align: center;"
+                >Valider</button>
+            </div>
+        `)
+
+        const findZoneByCategoryId = (categoryId) => zones.find(zone => zone.category.id === categoryId)
+
+        document.querySelector('#' + submitButtonId).addEventListener('click', () => {
+            const checkedRadio = document.querySelector(`input[name="${radioButtonsName}"]:checked`)
+            if (checkedRadio) {
+                const selectedZone = findZoneByCategoryId(parseInt(checkedRadio.value))
+
+                if (selectedZone) {
+                    copyInformationsFromFacebookEvent(selectedZone)
+                }
+            }
+        })
+        
         return
     }
 
