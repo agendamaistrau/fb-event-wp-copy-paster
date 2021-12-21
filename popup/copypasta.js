@@ -53,7 +53,8 @@ function pasteFacebookEventInformationsToArticle() {
                 `var facebookEventCity = \`${facebookEvent.city}\`;`,
                 `var facebookEventDescription = \`${facebookEvent.description}\`;`,
                 `var facebookEventImageLink = \`${facebookEvent.imageLink}\`;`,
-                `var facebookEventCategoryId = \`${facebookEvent?.zone?.category?.id || null}\`;`
+                `var facebookEventCategoryId = \`${facebookEvent?.zone?.category?.id || null}\`;`,
+                `var facebookEventShortCode = \`${facebookEvent?.zone?.shortCode || null}\`;`
             ]
 
             const executeScripts = (scriptsToExecute, callback) => {

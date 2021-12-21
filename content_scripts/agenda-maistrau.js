@@ -31,12 +31,12 @@ function typeText(inputElement, text) {
         )
     )
 
-    if (! facebookEventDescription) {
+    if (typeof facebookEventDescription === 'undefined') {
         alert(`Pas de description d'évènement sauvegardé`)
         return
     }
 
-    if (! facebookEventTimestamp) {
+    if (typeof facebookEventTimestamp === 'undefined') {
         alert(`Pas de date d'évènement sauvegardé`)
         return
     }
@@ -51,11 +51,14 @@ function typeText(inputElement, text) {
     const minute = time.getMinutes().toString().padStart(2, '0')
     const displayedTime = `${day}/${month}/${year} ${hour}:${minute}`
 
-    console.log(facebookEventDescription)
+    let articleContent = `<p>⏰Évènement du ${displayedTime}⏰` + '</p><p>' + 
+        facebookEventDescription.replace('\n', '<br>') + '<p>' +
+        facebookEventPlaceName + ' ' + facebookEventPlaceAddress + '</p>'
 
-    const articleContent = `⏰Évènement du ${displayedTime}⏰` + '<br>' + 
-        facebookEventDescription.replace('\n', '<br>') + '<br>' +
-        facebookEventPlaceName + ' ' + facebookEventPlaceAddress
+    if (typeof facebookEventShortCode !== 'undefined') {
+        articleContent += `<h3 style="text-align: center;">Autour de chez vous</h3>` +
+            facebookEventShortCode
+    }
 
     window.wrappedJSObject.tinymce.get('content').setContent(articleContent)
 
