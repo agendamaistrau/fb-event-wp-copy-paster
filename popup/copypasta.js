@@ -43,10 +43,37 @@ function pasteFacebookEventInformationsToArticle() {
     const getting = browser.runtime.getBackgroundPage();
     getting.then(async (page) => {
         const facebookEvent = await page.getFacebookEvent()
+
         if (facebookEvent) {
-            browser.tabs.executeScript({
-                code: `var facebookEvent = ${JSON.stringify(facebookEvent)};`
-            }).then(() => {
+            const facebookVariablesScripts = [
+                `var facebookEventTitle = \`${facebookEvent.title}\`;`,
+                `var facebookEventTimestamp = ${facebookEvent.time.getTime()};`,
+                `var facebookEventPlaceName = \`${facebookEvent.placeName}\`;`,
+                `var facebookEventPlaceAddress = \`${facebookEvent.placeAddress}\`;`,
+                `var facebookEventCity = \`${facebookEvent.city}\`;`,
+                `var facebookEventDescription = \`${facebookEvent.description}\`;`,
+                `var facebookEventImageLink = \`${facebookEvent.imageLink}\`;`,
+                `var facebookEventCategoryId = \`${facebookEvent?.zone?.category?.id || null}\`;`
+            ]
+
+            const executeScripts = (scriptsToExecute, callback) => {
+                function executeSingleScript (scriptIndex) {
+                    if (scriptsToExecute.length === scriptIndex) {
+                        callback()
+
+                        return
+                    }
+
+                    browser.tabs.executeScript({
+                        code: scriptsToExecute[scriptIndex]
+                    }).then(() => {
+                        executeSingleScript(scriptIndex + 1)
+                    })
+                }
+
+                executeSingleScript(0)
+            }
+            executeScripts(facebookVariablesScripts, () => {
                 browser.tabs.executeScript({file: '/content_scripts/agenda-maistrau.js'}).then(() => {
                     writeBodyHtml(`<h1>Collé !</h1>`)
                 })
@@ -54,8 +81,8 @@ function pasteFacebookEventInformationsToArticle() {
 
             return
         }
+
         writeBodyHtml(`<h1>Pas d'event Facebook trouvé :'(</h1>`)
-        
     }, (error) => {
         document.querySelector('body').innerHTML = JSON.stringify(error)
     });
