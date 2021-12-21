@@ -61,6 +61,7 @@ function typeText(inputElement, text) {
 
     window.wrappedJSObject.tinymce.get('content').setContent(articleContent)
 
+    // Créer le champ date_event_article
     const newCustomFieldButtonSelector = '#enternew'
     const newCustomFieldButton = document.querySelector(newCustomFieldButtonSelector)
 
@@ -73,6 +74,7 @@ function typeText(inputElement, text) {
 
     await new Promise(resolve => setTimeout(resolve, 1000))
 
+    // Clé date_event_article
     const customFieldLabelSelector = '#metakeyinput'
     const customFieldLabel = document.querySelector(customFieldLabelSelector)
 
@@ -83,6 +85,7 @@ function typeText(inputElement, text) {
 
     typeText(customFieldLabel, 'date_event_article')
 
+    // Valeur de date_event_article
     const customFieldValueSelector = '#metavalue'
     const customFieldValue = document.querySelector(customFieldValueSelector)
 
@@ -95,6 +98,7 @@ function typeText(inputElement, text) {
 
     typeText(customFieldValue, dateEventTime)
 
+    // Yoast SEO - Requête Cible
     const yoastSEOQuerySelector = '#focus-keyword-input-metabox'
     const yoastSEOQuery = document.querySelector(yoastSEOQuerySelector)
 
@@ -104,6 +108,38 @@ function typeText(inputElement, text) {
     }
 
     typeText(yoastSEOQuery, articleTitle)
+
+    // Catégories -> Toutes
+    const allCategoriesTabButtonSelector = '[href="#category-all"]'
+    const allCategoriesTabButton = document.querySelector(allCategoriesTabButtonSelector)
+
+    if (! allCategoriesTabButton) {
+        alert('Bouton "Catégories" -> "Toutes" manquant')
+        return
+    }
+
+    allCategoriesTabButton.click()
+
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    if (typeof facebookEventCategoryId === 'undefined') {
+        alert(`Pas de catégorie de zone sauvegardé`)
+        return
+    }
+
+    // Case à cocher catégorie
+    const categoryCheckboxSelector = '#in-category-' + facebookEventCategoryId.toString()
+    const categoryCheckbox = document.querySelector(categoryCheckboxSelector)
+
+    if (! categoryCheckbox) {
+        alert('Case à cocher de la zone sélectionnée manquante')
+        return
+    }
+
+    if (! categoryCheckbox.checked) {
+        categoryCheckbox.click()
+        await new Promise(resolve => setTimeout(resolve, 1000))
+    }
 
     browser.runtime.sendMessage(
         undefined,
