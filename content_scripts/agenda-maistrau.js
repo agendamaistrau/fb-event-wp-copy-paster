@@ -24,12 +24,11 @@ function typeText(inputElement, text) {
         return
     }
 
-    typeText(
-        titleInputElement,
-        facebookEventTitle + ' - ' + facebookEventPlaceName + ' - ' + (
-            facebookEventCity || facebookEventPlaceAddress || ''
-        )
+    const articleTitle = facebookEventTitle + ' - ' + facebookEventPlaceName + ' - ' + (
+        facebookEventCity || facebookEventPlaceAddress || ''
     )
+
+    typeText(titleInputElement, articleTitle)
 
     if (typeof facebookEventDescription === 'undefined') {
         alert(`Pas de description d'évènement sauvegardé`)
@@ -61,6 +60,50 @@ function typeText(inputElement, text) {
     }
 
     window.wrappedJSObject.tinymce.get('content').setContent(articleContent)
+
+    const newCustomFieldButtonSelector = '#enternew'
+    const newCustomFieldButton = document.querySelector(newCustomFieldButtonSelector)
+
+    if (! newCustomFieldButton) {
+        alert('Bouton "Saisissez un nouveau" manquant')
+        return
+    }
+
+    newCustomFieldButton.click()
+
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    const customFieldLabelSelector = '#metakeyinput'
+    const customFieldLabel = document.querySelector(customFieldLabelSelector)
+
+    if (! customFieldLabel) {
+        alert('Input label champ personnalisé manquant')
+        return
+    }
+
+    typeText(customFieldLabel, 'date_event_article')
+
+    const customFieldValueSelector = '#metavalue'
+    const customFieldValue = document.querySelector(customFieldValueSelector)
+
+    if (! customFieldValue) {
+        alert('Input valeur champ personnalisé manquant')
+        return
+    }
+
+    const dateEventTime = `${year}-${month}-${day} ${hour}:${minute}:00`
+
+    typeText(customFieldValue, dateEventTime)
+
+    const yoastSEOQuerySelector = '#focus-keyword-input-metabox'
+    const yoastSEOQuery = document.querySelector(yoastSEOQuerySelector)
+
+    if (! yoastSEOQuery) {
+        alert('Input "Requête cible" de "Yoast SEO" manquant')
+        return
+    }
+
+    typeText(yoastSEOQuery, articleTitle)
 
     browser.runtime.sendMessage(
         undefined,
