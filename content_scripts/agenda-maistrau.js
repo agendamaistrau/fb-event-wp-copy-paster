@@ -51,8 +51,10 @@ function typeText(inputElement, text) {
     const minute = time.getMinutes().toString().padStart(2, '0')
     const displayedTime = `${day}/${month}/${year} ${hour}:${minute}`
 
-    const articleContent = `⏰Évènement du ${displayedTime}⏰` + '\n' + 
-        facebookEventDescription + '\n' +
+    console.log(facebookEventDescription)
+
+    const articleContent = `⏰Évènement du ${displayedTime}⏰` + '<br>' + 
+        facebookEventDescription.replace('\n', '<br>') + '<br>' +
         facebookEventPlaceName + ' ' + facebookEventPlaceAddress
 
     window.wrappedJSObject.tinymce.get('content').setContent(articleContent)
