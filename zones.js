@@ -5,7 +5,7 @@ const zones = [
             slug: 'zone-marseille',
             name: 'Zone Marseille'
         },
-        shortCode: '[pt_view id="f7dbd8cbez"]'
+        articleEnd: `<h3 style="text-align: center;">Autour de chez vous</h3>[pt_view id="f7dbd8cbez"]`
     },
     {
         category: {
@@ -13,7 +13,7 @@ const zones = [
             slug: 'evenement',
             name: 'Zone Aix'
         },
-        shortCode: '[pt_view id="bbbe747pml"]'
+        articleEnd: `<h3 style="text-align: center;">Autour de chez vous</h3>[pt_view id="bbbe747pml"]`
     },
     {
         category: {
@@ -21,7 +21,7 @@ const zones = [
             slug: 'evenement-zone-etang-est',
             name: 'Zone Vitrolles'
         },
-        shortCode: '[pt_view id="9a6dcf3i4m"]'
+        articleEnd: `<h3 style="text-align: center;">Autour de chez vous</h3>[pt_view id="9a6dcf3i4m"]`
     },
     {
         category: {
@@ -29,7 +29,7 @@ const zones = [
             slug: 'evenement-etang-de-berre-ouest',
             name: 'Zone Salon'
         },
-        shortCode: '[pt_view id="68f63c5k9a"]'
+        articleEnd: `<h3 style="text-align: center;">Autour de chez vous</h3>[pt_view id="68f63c5k9a"]`
     },
     {
         category: {
@@ -37,7 +37,7 @@ const zones = [
             slug: 'evenement-zone-avignon',
             name: 'Zone Avignon'
         },
-        shortCode: '[pt_view id="1519f5b2lg"]'
+        articleEnd: `<h3 style="text-align: center;">Autour de chez vous</h3>[pt_view id="1519f5b2lg"]`
     },
     {
         category: {
@@ -45,6 +45,6 @@ const zones = [
             slug: 'evenement-zone-pertuis',
             name: 'Zone Pertuis'
         },
-        shortCode: '[pt_view id="453e5ebpkc"]'
+        articleEnd: `<h3 style="text-align: center;">Autour de chez vous</h3>[pt_view id="453e5ebpkc"]`
     }
 ]

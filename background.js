@@ -8,7 +8,7 @@ function setZone(zone) {
     if (facebookEvent) {
         facebookEvent.zone = {
             category: {... zone.category},
-            shortCode: zone.shortCode
+            articleEnd: zone.articleEnd
         }
     }
 }

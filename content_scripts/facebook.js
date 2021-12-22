@@ -8,34 +8,36 @@
 
     const titleElement = document.querySelector(eventTitleSelector)
 
-    if (! titleElement) {
-        alert('Mauvais selector pour le titre')
-        return
-    }
+    let title = ''
 
-    const title = titleElement.innerText
+    if (! titleElement) {
+        console.error('Mauvais selector pour le titre')
+    } else {
+        title = titleElement.innerText
+    }
 
     const bodyHTML = document.body.innerHTML
     const splitOnCurrentStartTimestampKey = bodyHTML.split('current_start_timestamp":', 2)
 
+    let time = null
+
     if (splitOnCurrentStartTimestampKey.length < 2) {
-        alert('La date n\'a pas été trouvée dans le code de la page (La clé "current_start_timestamp" n\'est pas là)')
-        return
+        console.error('La date n\'a pas été trouvée dans le code de la page (La clé "current_start_timestamp" n\'est pas là)')
+    } else {
+        const splitOnValueSeparator = splitOnCurrentStartTimestampKey[1].split(',', 2)
+        const timestamp = parseInt(splitOnValueSeparator[0])
+
+        time = new Date(timestamp * 1000 /* Convert Unix Timestamp to JavaScript Timestamp */)
     }
-
-    const splitOnValueSeparator = splitOnCurrentStartTimestampKey[1].split(',', 2)
-    const timestamp = parseInt(splitOnValueSeparator[0])
-
-    const time = new Date(timestamp * 1000 /* Convert Unix Timestamp to JavaScript Timestamp */)
 
     const placeNameElement = document.querySelector(placeNameSelector)
 
+    let placeName = null
     if (! placeNameElement) {
-        alert('Mauvais selector pour le lieu')
-        return
+        console.error('Mauvais selector pour le lieu')
+    } else {
+        placeName = placeNameElement.innerText
     }
-
-    const placeName = placeNameElement.innerText
 
     const placeAddressElement = document.querySelector(placeAddressSelector)
     const placeAddress = placeAddressElement ? placeAddressElement.innerText : null
@@ -88,16 +90,16 @@
 
     const coverImgElement = document.querySelector(coverImgSelector)
 
+    let imageLink = null
+
     if (! coverImgElement) {
-        alert('Mauvais selector pour l\'image de couverture')
-        return
-    }
+        console.error('Mauvais selector pour l\'image de couverture')
+    } else {
+        imageLink = coverImgElement.src
 
-    const imageLink = coverImgElement.src
-
-    if (! imageLink) {
-        alert('Le lien de l\'image de couverture n\'est pas trouvable (probablement un mauvais selector)')
-        return
+        if (! imageLink) {
+            console.error('Le lien de l\'image de couverture n\'est pas trouvable (probablement un mauvais selector)')
+        }
     }
 
     const findCity = () => {
@@ -130,7 +132,9 @@
             return city || null
         }
 
-        return placeAddress ? getCity(placeAddress) : getCity(placeName)
+        return placeAddress ? getCity(placeAddress) : (
+            placeName ? getCity(placeName) : null
+        )
     }
 
     const city = findCity()
@@ -142,5 +146,5 @@
         facebookEvent
     ).then(response => {
         // nothing
-    }).catch(alert)
+    }).catch(console.error)
 })()

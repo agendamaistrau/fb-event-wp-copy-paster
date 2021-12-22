@@ -12,7 +12,9 @@ function copyInformationsFromFacebookEvent(zone) {
 
                 /** @type {Date} */
                 const time = facebookEvent.time
-                const timeString = time.getFullYear() + '-' + ((time.getMonth() + 1).toString().padStart(2, '0')) + '-' + (time.getDate().toString().padStart(2, '0')) + ' ' + (time.getHours().toString().padStart(2, '0')) + ':' + (time.getMinutes().toString().padStart(2, '0'))
+                const timeString = time ? (
+                    time.getFullYear() + '-' + ((time.getMonth() + 1).toString().padStart(2, '0')) + '-' + (time.getDate().toString().padStart(2, '0')) + ' ' + (time.getHours().toString().padStart(2, '0')) + ':' + (time.getMinutes().toString().padStart(2, '0'))
+                ) : 'Aucune'
 
                 writeBodyHtml(`
                     <h1 style="text-align: center;">Event Facebook Copié !<h1>
@@ -47,14 +49,14 @@ function pasteFacebookEventInformationsToArticle() {
         if (facebookEvent) {
             const facebookVariablesScripts = [
                 `var facebookEventTitle = \`${facebookEvent.title}\`;`,
-                `var facebookEventTimestamp = ${facebookEvent.time.getTime()};`,
+                `var facebookEventTimestamp = ${facebookEvent.time ? facebookEvent.time.getTime() : `null`};`,
                 `var facebookEventPlaceName = \`${facebookEvent.placeName}\`;`,
                 `var facebookEventPlaceAddress = \`${facebookEvent.placeAddress}\`;`,
                 `var facebookEventCity = \`${facebookEvent.city}\`;`,
                 `var facebookEventDescription = \`${facebookEvent.description}\`;`,
                 `var facebookEventImageLink = \`${facebookEvent.imageLink}\`;`,
-                `var facebookEventCategoryId = \`${facebookEvent?.zone?.category?.id || null}\`;`,
-                `var facebookEventShortCode = \`${facebookEvent?.zone?.shortCode || null}\`;`
+                `var facebookEventCategoryId = \`${facebookEvent?.zone?.category?.id || `null`}\`;`,
+                `var facebookEventArticleEnd = \`${facebookEvent?.zone?.articleEnd || `''`}\`;`
             ]
 
             const executeScripts = (scriptsToExecute, callback) => {
