@@ -23,9 +23,31 @@ function typeText(inputElement, text) {
         return
     }
 
-    const articleTitle = facebookEventTitle + ' - ' + facebookEventPlaceName + ' - ' + (
-        facebookEventCity || facebookEventPlaceAddress || ''
-    )
+    console.log(typeof facebookEventCity)
+
+    const getEventPlaceInTitle = () => {
+
+        const isEmpty = (variable) => {
+            if (! variable) return true
+            if (variable === 'null') return true
+            
+            return false
+        }
+
+        if (! isEmpty(facebookEventCity)) {
+            return facebookEventCity
+        }
+
+        if (! isEmpty(facebookEventPlaceAddress)) {
+            return facebookEventPlaceAddress
+        }
+
+        return ''
+    }
+
+    const eventPlaceInTitle = getEventPlaceInTitle()
+
+    const articleTitle = facebookEventTitle + ' - ' + facebookEventPlaceName + ' - ' + eventPlaceInTitle
 
     typeText(titleInputElement, articleTitle)
 
