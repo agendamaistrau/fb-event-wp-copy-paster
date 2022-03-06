@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Facebook Event WordPress Copy Paster",
-    "version": "1.1.0",
+    "version": "1.1.2",
     "description": "Copie un Event de Facebook pour le coller dans un article WordPress",
     "icons": {
         "16": "icons/16x.png",
@@ -19,7 +19,7 @@
     },
     "browser_specific_settings": {
         "gecko": {
-          "id": "fb-event-wp-copy-paster@agenda-maistrau.fr",
+          "id": "fb-event-wp-copy-paster-1@agenda-maistrau.fr",
           "strict_min_version": "57.0"
         }
     },
